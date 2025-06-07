@@ -38,21 +38,28 @@ public class UserEntityServiceImpl implements UserEntityService {
 
     @Override
     public UserEntity update(Integer integer, UserEntity entity) {
-        return null;
+        UserEntity existingUser = userEntityRepository.findById(integer)
+                .orElseThrow(() -> new NotFoundException("User ID " + integer + " not found"));
+        existingUser.setUsername(entity.getUsername());
+        existingUser.setPassword(passwordEncoder.encode(entity.getPassword()));
+        existingUser.setNikName(entity.getNikName());
+        existingUser.setImageUrl(entity.getImageUrl());
+        return userEntityRepository.save(existingUser);
     }
 
     @Override
     public UserEntity getById(Integer integer) {
-        return null;
+        return userEntityRepository.findById(integer).orElseThrow(() -> new NotFoundException("Use ID " + integer+ " Not Found"));
     }
 
     @Override
-    public void delete(Integer integer) {
-
+    public void delete(Integer id) {
+        userEntityRepository.findById(id).orElseThrow(() -> new NotFoundException("User ID " + id + " Not Found"));
+        userEntityRepository.deleteById(id);
     }
 
     @Override
     public List<UserEntity> getAll() {
-        return List.of();
+        return userEntityRepository.findAll();
     }
 }

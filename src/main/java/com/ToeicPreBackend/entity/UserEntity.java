@@ -8,11 +8,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Entity class representing a User in the system.
  */
 
+@Setter
+@Getter
 @Entity
 @Table(name = "user")
 public class UserEntity {
@@ -21,14 +26,23 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
+	@NotBlank
     @Column(nullable = false)
     private String username;
 
+	@NotBlank
     @Column(nullable = false)
     private String password;
 
+	@NotBlank
+	@Column(nullable = false)
+	private String nikName;
+
     @Column(nullable = true)
     private String googleId;
+
+	@Column(nullable = true)
+	private String imageUrl;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = true)
@@ -36,53 +50,5 @@ public class UserEntity {
 
     @Column(nullable = true)
     private Boolean isActive = true;
-    
-    // Getters and setters
-	public Long getUserId() {
-		return userId;
-	}
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getGoogleId() {
-		return googleId;
-	}
-
-	public void setGoogleId(String googleId) {
-		this.googleId = googleId;
-	}
-
-	public Role getRole() { 
-		return role;
-	}
-
-	public void setRole(Role role) {  
-		this.role = role;
-	}
-
-	public Boolean getIsActive() {
-		return isActive;
-	}
-
-	public void setIsActive(Boolean isActive) {
-		this.isActive = isActive;
-	}
 }
