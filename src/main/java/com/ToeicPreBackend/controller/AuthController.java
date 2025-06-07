@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import request.UserRegisterRequest;
 import request.UserRequest;
 import response.UserResponse;
 
@@ -63,8 +64,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody UserEntity user) {
-        UserEntity createdUser = userService.create(user);
+    public ResponseEntity<?> register(@RequestBody UserRegisterRequest userReq) {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername(userReq.getUsername());
+        userEntity.setPassword(userReq.getPassword());
+        userEntity.setNikName(userReq.getNikName());
+        UserEntity createdUser = userService.create(userEntity);
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
                 "message", "User registered successfully",
                 "user", createdUser
