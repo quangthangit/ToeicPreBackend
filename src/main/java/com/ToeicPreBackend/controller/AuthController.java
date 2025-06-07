@@ -5,6 +5,7 @@ import com.ToeicPreBackend.exception.AuthenticationFailedException;
 import com.ToeicPreBackend.jwt.JwtService;
 import com.ToeicPreBackend.service.UserEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,7 +21,7 @@ import response.UserResponse;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
 
     private final AuthenticationManager authManager;
@@ -59,5 +60,14 @@ public class AuthController {
         } catch (Exception e) {
             throw new RuntimeException("An unexpected error occurred during login");
         }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody UserEntity user) {
+        UserEntity createdUser = userService.create(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
+                "message", "User registered successfully",
+                "user", createdUser
+        ));
     }
 }
