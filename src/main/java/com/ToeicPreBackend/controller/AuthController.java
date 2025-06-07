@@ -1,6 +1,6 @@
 package com.ToeicPreBackend.controller;
 
-import com.ToeicPreBackend.entity.UserEntity;
+import com.ToeicPreBackend.entity.User;
 import com.ToeicPreBackend.exception.AuthenticationFailedException;
 import com.ToeicPreBackend.jwt.JwtService;
 import com.ToeicPreBackend.service.UserEntityService;
@@ -46,7 +46,7 @@ public class AuthController {
                     )
             );
             String token = jwtService.generateToken(authentication);
-            UserEntity user = userService.getByUsername(request.getUsername());
+            User user = userService.getByUsername(request.getUsername());
             UserResponse userLoginResponse = new UserResponse();
             userLoginResponse.setUsername(user.getUsername());
             userLoginResponse.setRole(user.getRole().toString());
@@ -65,11 +65,11 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserRegisterRequest userReq) {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setUsername(userReq.getUsername());
-        userEntity.setPassword(userReq.getPassword());
-        userEntity.setNikName(userReq.getNikName());
-        UserEntity createdUser = userService.create(userEntity);
+        User user = new User();
+        user.setUsername(userReq.getUsername());
+        user.setPassword(userReq.getPassword());
+        user.setNikName(userReq.getNikName());
+        User createdUser = userService.create(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
                 "message", "User registered successfully",
                 "user", createdUser

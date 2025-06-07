@@ -2,7 +2,7 @@ package com.ToeicPreBackend.service.impl;
 
 import java.util.List;
 import com.ToeicPreBackend.entity.Role;
-import com.ToeicPreBackend.entity.UserEntity;
+import com.ToeicPreBackend.entity.User;
 import com.ToeicPreBackend.exception.AlreadyExistsException;
 import com.ToeicPreBackend.exception.NotFoundException;
 import com.ToeicPreBackend.repository.UserEntityRepository;
@@ -21,34 +21,34 @@ public class UserEntityServiceImpl implements UserEntityService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public UserEntity getByUsername(String username) {
+    public User getByUsername(String username) {
         return userEntityRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("Use " + username+ " Not Found"));
     }
 
     @Override
-    public UserEntity create(UserEntity entity) {
-        userEntityRepository.findByUsername(entity.getUsername()).ifPresent(u -> {
-            throw new AlreadyExistsException(entity.getUsername() + " already exists");
+    public User create(User user) {
+        userEntityRepository.findByUsername(user.getUsername()).ifPresent(u -> {
+            throw new AlreadyExistsException(user.getUsername() + " already exists");
         });
-        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
-        entity.setRole(Role.ROLE_USER);
-        entity.setIsActive(true);
-        return userEntityRepository.save(entity);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.ROLE_USER);
+        user.setIsActive(true);
+        return userEntityRepository.save(user);
     }
 
     @Override
-    public UserEntity update(Integer integer, UserEntity entity) {
-        UserEntity existingUser = userEntityRepository.findById(integer)
+    public User update(Integer integer, User user) {
+        User existingUser = userEntityRepository.findById(integer)
                 .orElseThrow(() -> new NotFoundException("User ID " + integer + " not found"));
-        existingUser.setUsername(entity.getUsername());
-        existingUser.setPassword(passwordEncoder.encode(entity.getPassword()));
-        existingUser.setNikName(entity.getNikName());
-        existingUser.setImageUrl(entity.getImageUrl());
+        existingUser.setUsername(user.getUsername());
+        existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        existingUser.setNikName(user.getNikName());
+        existingUser.setImageUrl(user.getImageUrl());
         return userEntityRepository.save(existingUser);
     }
 
     @Override
-    public UserEntity getById(Integer integer) {
+    public User getById(Integer integer) {
         return userEntityRepository.findById(integer).orElseThrow(() -> new NotFoundException("Use ID " + integer+ " Not Found"));
     }
 
@@ -59,7 +59,7 @@ public class UserEntityServiceImpl implements UserEntityService {
     }
 
     @Override
-    public List<UserEntity> getAll() {
+    public List<User> getAll() {
         return userEntityRepository.findAll();
     }
 }
