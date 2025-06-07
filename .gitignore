@@ -32,6 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 
-# Ignore Spring Boot application config
-src/main/resources/application.properties
+git rm --cached src/main/resources/application.properties
+
 
